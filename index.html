@@ -1,0 +1,132 @@
+<html lang="en">
+
+<head>
+	<title> Tiny </title>
+</head>
+
+
+<body>
+
+
+<style>
+	* {
+		font-family: Monospaced, aakar;
+	}
+
+	#repl {
+		margin: 10% 20% 20% 10%;
+	}
+
+	#input {
+		height: 60px;
+		border-radius: 5%;
+		color: gray;
+	}
+
+	.io {
+		width: 100%;
+		padding: 20px;
+		font-weight: bold;
+	}
+
+	.output-block {
+		position: relative;
+		background-color: rgba(0, 0, 0, .1);
+		border-radius: 5px;
+		padding: 10px;
+		margin-bottom: 3px;
+	}
+
+	.output-block > p {
+		margin: 3px;
+		padding-top: 1em;
+	}
+
+	.output-block > span {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		font-size: .8em;
+		color: gray;
+	}
+
+</style>
+
+<div id="repl">
+	<input type='text' id='input' class="io"/>
+
+	<div id="stdout" class="io">
+
+	</div>
+</div>
+
+
+<script lang="js">
+
+	function read() {
+		const textBox = document.getElementById('input');
+
+		const t = textBox.value;
+		textBox.value = "";
+
+		return t;
+	}
+
+	// trick to make eval always evaluate in the global scope, not in this function's scope (which will go away)
+	const globalScopeEval = eval;
+
+	function compile(source) {
+		return source.replace(/ ?let /g," var ");
+	}
+
+	function eval_(source) {
+
+		try {
+			return [globalScopeEval(compile(source)), true];
+		} catch (e) {
+			return [`${e.message}\n\n${e.stack}`, false];
+		}
+	}
+
+	function print(input, text, color) {
+		const root = document.getElementById("stdout");
+
+		const node = document.createElement("div");
+		node.classList.add("output-block");
+		root.insertBefore(node, root.firstChild);
+
+		const label = document.createElement("span");
+		label.innerText = input;
+		node.appendChild(label);
+
+
+		const paragraph = document.createElement("p");
+		paragraph.innerText = text || "";
+		paragraph.style.color = color;
+		node.appendChild(paragraph);
+	}
+
+	let colorOk = "#0074D9";
+	let colorEvil = "#FF4136";
+	// loop
+	document.getElementById("input").addEventListener('keypress', function(event) {
+		if (event.code !== 'Enter') return;
+
+		const in_ = read();
+		let [output, ok] = eval_(in_)
+
+		let color = ok ? colorOk : colorEvil;
+		print(in_, output, color);
+
+	})
+
+
+
+</script>
+
+</body>
+
+
+</html>
+
+
