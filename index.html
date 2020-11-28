@@ -138,19 +138,18 @@
 	}
 
 	function print(input, text, ok) {
-		let color = ok ? "#0074D9" : "#FF4136";
+		const color = ok ? "#0074D9" : "#FF4136";
 
 		const root = document.getElementById("stdout");
+
 		const node = document.createElement("div");
 		node.classList.add("output-block");
-		root.insertBefore(node, root.firstChild);
-
 		node.onclick = () => usePast(input);
+		root.insertBefore(node, root.firstChild);
 
 		const label = document.createElement("span");
 		label.innerText = input;
 		node.appendChild(label);
-
 
 		const paragraph = document.createElement("p");
 		paragraph.innerText = text || "";
