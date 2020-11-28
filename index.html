@@ -171,11 +171,9 @@
 		const source = s => eval_(s)[0];
 
 		document.getElementById("input").placeholder = [
-			"Tiny is a javascript toy repl",
 			"shift + enter = eval",
-			"",
-			"Tiny runs on eval",
-
+			"Tiny is a javascript toy repl",
+			"Tiny runs by 'eval-ing' your input statements against the window object. MDN recommends not to use eval.",
 			"// Read", source("read"),
 			"// Eval", source("eval_"),
 			"// Print", source("print"),
