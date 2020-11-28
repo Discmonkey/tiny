@@ -158,13 +158,11 @@
 	}
 
 	function usePast(in_) {
-		document.getElementById('input').value = in_;
-		let [output, ok] = eval_(in_);
-		print(in_, output, ok);
+		document.getElementById('input').value += in_;
 	}
 
 	function loop(event) {
-		if (event.code !== 'Enter' || event.shiftKey) return;
+		if (!(event.code === 'Enter' && event.shiftKey)) return;
 
 		const in_ = read();
 
