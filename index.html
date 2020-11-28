@@ -9,19 +9,53 @@
 
 
 <style>
+
 	* {
 		font-family: Monospaced, aakar;
+		/* CSS HEX */
+		--charcoal: #264653ff;
+		--persian-green: #2a9d8fff;
+		--orange-yellow-crayola: #e9c46aff;
+		--sandy-brown: #f4a261ff;
+		--burnt-sienna: #e76f51ff;
+
+		color: var(--orange-yellow-crayola);
+	}
+
+	body {
+		background-color: var(--charcoal);
+	}
+
+	#title {
+		padding: 3px;
+		font-weight: bold;
+		font-size: large;
+		letter-spacing: 2px;
 	}
 
 	#repl {
-		margin: 10% 20% 20% 10%;
+		margin: 10% 20% 10% 20%;
 	}
 
 	#input {
-		height: 60px;
-		border-radius: 5%;
-		color: gray;
+		height: 2em;
+		color: var(--charcoal);
+		width: 100%;
+		padding: 8px;
+		font-size: 1em;
+		box-sizing: border-box;
+		border-radius: 2px;
+		border: 1px solid var(--persian-green);
+		outline: none;
+		background-color: white;
 	}
+
+	#input:focus {
+		-webkit-box-shadow: 0 0 3px 3px var(--persian-green);
+		-moz-box-shadow: 0 0 3px 3px var(--persian-green);
+		box-shadow: 0 0 3px 3px var(--persian-green);
+	}
+
 
 	.io {
 		width: 100%;
@@ -32,10 +66,11 @@
 
 	.output-block {
 		position: relative;
-		background-color: rgba(0, 0, 0, .1);
 		border-radius: 5px;
 		padding: 10px;
 		margin-bottom: 3px;
+		background-color: white;
+		border: 2px solid var(--persian-green)
 	}
 
 	.output-block > p {
@@ -48,10 +83,12 @@
 		top: 10px;
 		left: 10px;
 		font-size: .8em;
-		color: gray;
+		color: var(--persian-green);
 	}
 
 </style>
+
+<h2 id="title">Tiny Interpreter </h2>
 
 <div id="repl">
 	<input type='text' id='input' class="io"/>
