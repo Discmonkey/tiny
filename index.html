@@ -19,7 +19,7 @@
 		--sandy-brown: #f4a261ff;
 		--burnt-sienna: #e76f51ff;
 
-		color: var(--orange-yellow-crayola);
+
 	}
 
 	body {
@@ -27,10 +27,9 @@
 	}
 
 	#title {
-		padding: 3px;
-		font-weight: bold;
-		font-size: large;
+		padding: 5px;
 		letter-spacing: 2px;
+		color: var(--orange-yellow-crayola);
 	}
 
 	#repl {
@@ -38,9 +37,11 @@
 	}
 
 	#input {
-		height: 2em;
+		height: 10em;
+
 		color: var(--charcoal);
 		width: 100%;
+		max-width: 100%;
 		padding: 8px;
 		font-size: 1em;
 		box-sizing: border-box;
@@ -68,30 +69,34 @@
 		position: relative;
 		border-radius: 5px;
 		padding: 10px;
-		margin-bottom: 3px;
+		margin-bottom: 10px;
 		background-color: white;
-		border: 2px solid var(--persian-green)
+		border: 2px solid var(--persian-green);
+		cursor: pointer;
+	}
+
+	.output-block:hover {
+		box-shadow: 0 0 3px 3px var(--persian-green);
 	}
 
 	.output-block > p {
+		word-break: break-all;
 		margin: 3px;
 		padding-top: 1em;
 	}
 
 	.output-block > span {
-		position: absolute;
-		top: 10px;
-		left: 10px;
+		display: block;
 		font-size: .8em;
 		color: var(--persian-green);
 	}
 
 </style>
 
-<h2 id="title">Tiny Interpreter </h2>
+<h2 id="title">Tiny </h2>
 
 <div id="repl">
-	<input type='text' id='input' class="io"/>
+	<textarea  id='input' class="io"></textarea>
 
 	<div id="stdout" class="io">
 
@@ -104,20 +109,18 @@
 	function read() {
 		const textBox = document.getElementById('input');
 
-		const t = textBox.value;
+		const t = textBox.value.trim();
 		textBox.value = "";
 
 		return t;
 	}
 
-	// trick to make eval always evaluate in the global scope, not in this function's scope (which will go away)
-	const globalScopeEval = eval;
-
 	function compile(source) {
-		return source.replace(/ ?let /g," var ");
+		return source.replace(/ ?let /g," var ").replace(/ ?const /g, " const ");
 	}
 
 	function eval_(source) {
+		const globalScopeEval = eval;
 
 		try {
 			return [globalScopeEval(compile(source)), true];
@@ -126,12 +129,15 @@
 		}
 	}
 
-	function print(input, text, color) {
-		const root = document.getElementById("stdout");
+	function print(input, text, ok) {
+		let color = ok ? "#0074D9" : "#FF4136";
 
+		const root = document.getElementById("stdout");
 		const node = document.createElement("div");
 		node.classList.add("output-block");
 		root.insertBefore(node, root.firstChild);
+
+		node.onclick = () => usePast(input);
 
 		const label = document.createElement("span");
 		label.innerText = input;
@@ -144,19 +150,41 @@
 		node.appendChild(paragraph);
 	}
 
-	let colorOk = "#0074D9";
-	let colorEvil = "#FF4136";
-	// loop
-	document.getElementById("input").addEventListener('keypress', function(event) {
-		if (event.code !== 'Enter') return;
+	function usePast(in_) {
+		document.getElementById('input').value = in_;
+		let [output, ok] = eval_(in_);
+		print(in_, output, ok);
+	}
+
+	function loop(event) {
+		if (event.code !== 'Enter' || event.shiftKey) return;
 
 		const in_ = read();
+
 		let [output, ok] = eval_(in_)
+		print(in_, output, ok);
+	}
 
-		let color = ok ? colorOk : colorEvil;
-		print(in_, output, color);
+	document.getElementById("input").addEventListener('keypress', loop);
 
-	})
+	(function docs() {
+		const source = s => eval_(s)[0];
+
+		document.getElementById("input").placeholder = [
+			"Tiny is a javascript toy repl",
+			"shift + enter = eval",
+			"",
+			"Tiny runs on eval",
+
+			"// Read", source("read"),
+			"// Eval", source("eval_"),
+			"// Print", source("print"),
+			"// Loop", source("loop"),
+			"// Docs", eval(docs),
+		].join("\n\n");
+	})()
+
+
 
 
 
