@@ -165,6 +165,7 @@
 		if (!(event.code === 'Enter' && event.shiftKey)) return;
 
 		const in_ = read();
+		if (!in_) return;
 
 		let [output, ok] = eval_(in_)
 		print(in_, output, ok);
