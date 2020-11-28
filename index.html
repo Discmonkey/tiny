@@ -2,6 +2,7 @@
 
 <head>
 	<title> Tiny </title>
+	<link rel="author" href="https://github.com/discmonkey">
 </head>
 
 
@@ -37,7 +38,7 @@
 	}
 
 	#input {
-		height: 10em;
+		height: 30em;
 
 		color: var(--charcoal);
 		width: 100%;
@@ -55,6 +56,10 @@
 		-webkit-box-shadow: 0 0 3px 3px var(--persian-green);
 		-moz-box-shadow: 0 0 3px 3px var(--persian-green);
 		box-shadow: 0 0 3px 3px var(--persian-green);
+	}
+
+	a {
+		text-decoration: none;
 	}
 
 
@@ -93,7 +98,9 @@
 
 </style>
 
-<h2 id="title">Tiny </h2>
+<a target="_blank" href="https://github.com/discmonkey/tiny">
+	<h2 id="title">Tiny </h2>
+</a>
 
 <div id="repl">
 	<textarea  id='input' class="io"></textarea>
@@ -102,6 +109,7 @@
 
 	</div>
 </div>
+
 
 
 <script lang="js">
@@ -171,7 +179,7 @@
 		const source = s => eval_(s)[0];
 
 		document.getElementById("input").placeholder = [
-			"shift + enter = eval",
+			"shift + enter to eval",
 			"Tiny is a javascript toy repl",
 			"Tiny runs by 'eval-ing' your input statements against the window object. MDN recommends not to use eval.",
 			"// Read", source("read"),
